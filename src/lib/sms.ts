@@ -12,7 +12,7 @@ export async function sendOtp(toEmail: string, otp: string): Promise<void> {
   }
 
   const { error } = await resend.emails.send({
-    from: "Ekamuthu <noreply@ekamuthu.lk>",
+    from: "Ekamuthu <onboarding@resend.dev>",
     to: toEmail,
     subject: `Your Ekamuthu verification code: ${otp}`,
     html: `
