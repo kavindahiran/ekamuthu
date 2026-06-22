@@ -2,7 +2,7 @@
 
 import { auth, update } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { sendSms } from "@/lib/sms";
+import { sendOtp } from "@/lib/sms";
 import { redirect } from "next/navigation";
 
 export type SendOtpResult =
@@ -50,9 +50,10 @@ export async function sendOtpAction(
     data: { phone, phoneOtp: otp, phoneOtpExpiresAt: expiresAt },
   });
 
-  await sendSms(phone, `Your Ekamuthu code: ${otp}. Valid for 10 minutes.`);
+  const userEmail = session.user.email!;
+  await sendOtp(userEmail, otp);
 
-  const isDev = !process.env.TWILIO_ACCOUNT_SID;
+  const isDev = !process.env.RESEND_API_KEY;
   return { success: true, phone, ...(isDev && { devOtp: otp }) };
 }
 
