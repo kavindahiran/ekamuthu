@@ -1,9 +1,15 @@
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_APP_PASSWORD,
+  },
+});
 
 export async function sendOtp(toEmail: string, otp: string): Promise<void> {
-  if (!process.env.RESEND_API_KEY) {
+  if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
     console.log(`\n[OTP DEV] ──────────────────────────`);
     console.log(`  To:  ${toEmail}`);
     console.log(`  OTP: ${otp}`);
@@ -11,8 +17,8 @@ export async function sendOtp(toEmail: string, otp: string): Promise<void> {
     return;
   }
 
-  const { error } = await resend.emails.send({
-    from: "Ekamuthu <onboarding@resend.dev>",
+  await transporter.sendMail({
+    from: `"Ekamuthu · එකමුතු" <${process.env.GMAIL_USER}>`,
     to: toEmail,
     subject: `Your Ekamuthu verification code: ${otp}`,
     html: `
@@ -31,6 +37,4 @@ export async function sendOtp(toEmail: string, otp: string): Promise<void> {
       </div>
     `,
   });
-
-  if (error) throw new Error(error.message ?? "Email delivery failed");
 }
