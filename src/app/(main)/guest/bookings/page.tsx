@@ -129,10 +129,22 @@ function BookingCard({
             </span>
           </div>
 
-          <p className="mt-3 text-xs text-stone-500">{cfg.description}</p>
+          <p className="mt-3 text-xs text-stone-500">
+            {booking.status === "APPROVED" && booking.payment?.status === "PENDING"
+              ? "Bank transfer submitted — waiting for payment confirmation"
+              : cfg.description}
+          </p>
 
-          {/* Approved CTA */}
-          {booking.status === "APPROVED" && (
+          {/* Approved — transfer submitted, awaiting admin */}
+          {booking.status === "APPROVED" && booking.payment?.status === "PENDING" && (
+            <div className="mt-3 flex items-center gap-2 rounded-lg bg-amber-50 border border-amber-200 px-4 py-2.5">
+              <span className="text-amber-500 text-base">⏳</span>
+              <span className="text-xs text-amber-700 font-medium">Awaiting payment confirmation</span>
+            </div>
+          )}
+
+          {/* Approved — no payment yet */}
+          {booking.status === "APPROVED" && !booking.payment && (
             <div className="mt-3 flex items-center gap-3">
               <Link
                 href={`/guest/pay/${booking.id}`}
