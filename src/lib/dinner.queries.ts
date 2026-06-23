@@ -154,7 +154,7 @@ export async function getGuestBookingForListing(
 ) {
   return prisma.booking.findUnique({
     where: { guestId_listingId: { guestId, listingId } },
-    select: { id: true, status: true, introMessage: true },
+    select: { id: true, status: true, introMessage: true, payment: { select: { status: true } } },
   });
 }
 

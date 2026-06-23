@@ -340,7 +340,7 @@ export default async function DinnerDetailPage({ params }: Props) {
 
             {/* Booking state machine */}
             {!canBook ? null : existingBooking ? (
-              <ExistingBookingBanner status={existingBooking.status} />
+              <ExistingBookingBanner status={existingBooking.status} paymentStatus={existingBooking.payment?.status ?? null} />
             ) : !session ? (
               <div className="space-y-3 text-center">
                 <p className="text-sm text-stone-500">Sign in to request a seat</p>
@@ -373,14 +373,23 @@ export default async function DinnerDetailPage({ params }: Props) {
   );
 }
 
-function ExistingBookingBanner({ status }: { status: string }) {
-  const info = BOOKING_STATUS_LABEL[status] ?? { label: status, color: "stone" };
+function ExistingBookingBanner({ status, paymentStatus }: { status: string; paymentStatus: string | null }) {
   const colorMap: Record<string, string> = {
     amber:   "bg-amber-50 border-amber-200 text-amber-800",
     emerald: "bg-emerald-50 border-emerald-200 text-emerald-800",
     red:     "bg-red-50 border-red-200 text-red-800",
     stone:   "bg-stone-50 border-stone-200 text-stone-600",
   };
+
+  if (status === "APPROVED" && paymentStatus === "PENDING") {
+    return (
+      <div className="rounded-lg border bg-amber-50 border-amber-200 px-4 py-3 text-sm text-center font-medium text-amber-800">
+        ⏳ Awaiting payment confirmation
+      </div>
+    );
+  }
+
+  const info = BOOKING_STATUS_LABEL[status] ?? { label: status, color: "stone" };
   return (
     <div className={`rounded-lg border px-4 py-3 text-sm text-center font-medium ${colorMap[info.color]}`}>
       {info.label}
