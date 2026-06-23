@@ -18,14 +18,14 @@ export default function VerifyPhonePage() {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-100">
-            <span className="text-2xl">📱</span>
+            <span className="text-2xl">{otpSent ? "✉️" : "📱"}</span>
           </div>
           <h1 className="text-xl font-semibold text-stone-900">
             {otpSent ? "Enter your code" : "Verify your number"}
           </h1>
           <p className="mt-1 text-sm text-stone-500">
             {otpSent
-              ? `We sent a 6-digit code to ${(sendState as { success: true; phone: string }).phone}`
+              ? "We sent a 6-digit code to your registered email"
               : "Required before you can book or host a dinner."}
           </p>
         </div>
@@ -79,7 +79,7 @@ export default function VerifyPhonePage() {
               {"devOtp" in sendState && sendState.devOtp && (
                 <div className="rounded-lg bg-amber-50 border border-amber-200 px-4 py-3">
                   <p className="text-xs font-medium text-amber-700 mb-1">
-                    DEV MODE — Twilio not configured
+                    DEV MODE — Gmail not configured
                   </p>
                   <p className="text-2xl font-mono font-bold tracking-widest text-amber-900">
                     {sendState.devOtp}
