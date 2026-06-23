@@ -19,11 +19,6 @@ export default auth((req) => {
     return NextResponse.redirect(signIn);
   }
 
-  // Block unverified phone numbers from booking flows
-  if (pathname.startsWith("/guest/book") && session && !session.user.phoneVerified) {
-    return NextResponse.redirect(new URL("/onboarding/verify-phone", req.url));
-  }
-
   // Block non-admins from admin routes
   if (ADMIN_ONLY.some((p) => pathname.startsWith(p)) && session?.user.role !== "ADMIN") {
     return NextResponse.redirect(new URL("/", req.url));

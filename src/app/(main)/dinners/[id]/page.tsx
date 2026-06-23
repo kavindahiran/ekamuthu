@@ -354,16 +354,6 @@ export default async function DinnerDetailPage({ params }: Props) {
                   No account? Register free
                 </Link>
               </div>
-            ) : !session.user.phoneVerified ? (
-              <div className="space-y-2 text-center">
-                <p className="text-sm text-stone-500">Verify your phone to request seats</p>
-                <Link
-                  href="/onboarding/verify-phone"
-                  className="block w-full rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-medium text-sm py-3 transition text-center"
-                >
-                  Verify phone number
-                </Link>
-              </div>
             ) : (
               <BookingForm listingId={dinner.id} maxSeats={dinner.maxSeatsPerBooking} />
             )}

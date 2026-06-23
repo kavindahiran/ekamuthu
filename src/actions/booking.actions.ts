@@ -18,10 +18,6 @@ export async function createBookingAction(
   if (!session?.user?.id) {
     redirect("/signin");
   }
-  if (!session.user.phoneVerified) {
-    redirect("/onboarding/verify-phone");
-  }
-
   const listingId = formData.get("listingId") as string;
   const introMessage = (formData.get("introMessage") as string)?.trim();
 
