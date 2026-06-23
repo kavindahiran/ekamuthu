@@ -25,7 +25,7 @@ export default function VerifyPhonePage() {
           </h1>
           <p className="mt-1 text-sm text-stone-500">
             {otpSent
-              ? "We sent a 6-digit code to your registered email"
+              ? `We sent a 6-digit code to ${(sendState as { success: true; email: string }).email}`
               : "Required before you can book or host a dinner."}
           </p>
         </div>

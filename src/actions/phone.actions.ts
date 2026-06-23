@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 
 export type SendOtpResult =
   | { error: string }
-  | { success: true; phone: string; devOtp?: string };
+  | { success: true; phone: string; email: string; devOtp?: string };
 
 export type VerifyOtpResult = { error: string } | { success: true };
 
@@ -53,8 +53,8 @@ export async function sendOtpAction(
   const userEmail = session.user.email!;
   await sendOtp(userEmail, otp);
 
-  const isDev = !process.env.RESEND_API_KEY;
-  return { success: true, phone, ...(isDev && { devOtp: otp }) };
+  const isDev = !process.env.GMAIL_APP_PASSWORD;
+  return { success: true, phone, email: userEmail, ...(isDev && { devOtp: otp }) };
 }
 
 export async function verifyOtpAction(
